@@ -29,7 +29,7 @@ Your task is to create a Python script that analyzes the records to calculate ea
 * The greatest decrease in profits (date and amount) over the entire period
 
 Your analysis should look similar to the following:
-
+```text
   Financial Analysis
   ----------------------------
   Total Months: 86
@@ -37,6 +37,7 @@ Your analysis should look similar to the following:
   Average Change: $-8311.11
   Greatest Increase in Profits: Aug-16 ($1862002)
   Greatest Decrease in Profits: Feb-14 ($-1825558)
+  ```
 
 In addition, your final script should both print the analysis to the terminal and export a text file with the results.
 
@@ -58,6 +59,7 @@ You will be given a set of poll data called [election_data.csv](PyPoll/Resources
 
 Your analysis should look similar to the following:
 
+```text
   Election Results
   -------------------------
   Total Votes: 369711
@@ -68,5 +70,6 @@ Your analysis should look similar to the following:
   -------------------------
   Winner: Diana DeGette
   -------------------------
+  ```
  
 In addition, your final script should both print the analysis to the terminal and export a text file with the results.
