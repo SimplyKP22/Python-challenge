@@ -38,12 +38,17 @@ with open(original_file) as input_file:
     for record in Profit_Losses:
         Total_Profit_Loss += record
 
+    #In this step we keep a record for the changes between each month within the dataset. 
+    #Add each change to a list 'Change_list'
     for i in range(len(Profit_Losses)-1):
         Change_list.append(Profit_Losses[i+1]-Profit_Losses[i])
 
+    #Calulate the total of all of the changes
     for change in Change_list:
         TotalOfChanges += change
 
+    #Now that we have the foundational calculations complete. We can perform
+    #additional summary calculations 
     Average_Change = round(TotalOfChanges/(Total_Months-1),2)
     Change_list.sort()
     Change_list_Length = len(Change_list)
@@ -59,7 +64,7 @@ with open(original_file) as input_file:
             Greatest_Decrease_Date = line[0]
     
 
-
+#Print the summary report
 print("Financial Analysis")
 print("----------------------------")
 print(f"Total Months: {Total_Months}")
@@ -68,12 +73,14 @@ print(f"Average Change: ${Average_Change}")
 print(f"Greatest Increase in Profits: {Greatest_Increase_Date} (${Greatest_Increase})")
 print(f"Greatest Decrease in Profits: {Greatest_Decrease_Date} (${Greatest_Decrease})")
 
+# Save a reference point for the original Financial Analysis
+original_stdout = sys.stdout 
 
-original_stdout = sys.stdout # Save a reference point for the original Financial Analysis
-
+# Create a txt file for a copy of the output. This will be placed in the same
+# #folder as the .py file 
 with open('main_output.txt', 'w') as f:
-    sys.stdout = f # Create a txt file for a copy of the output. This will be placed in the same 
-                    #folder as the .py file
+    sys.stdout = f 
+                    
     print("Financial Analysis")
     print("----------------------------")
     print(f"Total Months: {Total_Months}")
@@ -81,4 +88,6 @@ with open('main_output.txt', 'w') as f:
     print(f"Average Change: ${Average_Change}")
     print(f"Greatest Increase in Profits: {Greatest_Increase_Date} (${Greatest_Increase})")
     print(f"Greatest Decrease in Profits: {Greatest_Decrease_Date} (${Greatest_Decrease})")
-    sys.stdout = original_stdout # Reset to the origial output
+    
+    # Reset to the origial output
+    sys.stdout = original_stdout 

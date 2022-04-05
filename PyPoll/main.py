@@ -1,50 +1,64 @@
 # Import dependencies 
 import os
 import csv
-import pandas as pd
+import sys
 
 
-# Create the connection to the csv file with source data
+# Create the connection to the csv file path with source data
 
-original_file = 'Resources/election_data.csv'
+csvpath = os.path.join("Resources","election_data.csv")
 
-Candidates_df = pd.read_csv(original_file)
+# Create variables that will track/hold the calculated values from the loops
+Candidates = {}
+Total_Votes = 0
 
-#Create variables that will be used to house the data needed for tracking totals within the loops
-#Also create variables that will capture the values that need to be reported 
+# Open the csv file 
+csvfile = open(csvpath)
 
-Total_votes = Candidates_df["Ballot ID"].count()
+# 'Read-in' the source data from the csv file
+csvreader =csv.reader(csvfile, delimiter=",")
 
+# Skip the first row of the data since this row contains headers
+csv_header = next(csvreader)
 
+# Begin look to calculate the total number of votes, by counting the number of rows/records in the data
+# Loop through the data in the third column to determine the names of the candidates that need to be 
+# added to the Candidates dictionary. We also capture the number of votes for each candidate and add that value as the values for the keys/candidates 
+for line in csvreader:
+    Total_Votes += 1
+    if line[2] not in Candidates:
+        Candidates[line[2]] = 1
+    else:
+        Candidates[line[2]] += 1
 
-Candidates_df["Vote_Perc"] = ((1 / Total_votes)*100)
-
-Candidate_Votes = Candidates_df["Candidate"].value_counts()
-Candidate_Perc = (Candidate_Votes / Total_votes) * 100
-#Winner = Candidates_df.loc[]
-Summary_df = pd.DataFrame({"Perc ": Candidate_Perc,"Votes": Candidate_Votes})
-
+# Print the summary report
 print("Election Results")
 print("-------------------------")
-print(f"Total Votes: {Total_votes}")
+print(f"Total Votes: {Total_Votes}")
 print("-------------------------")
-print(Summary_df)
 
+# Loop that will properly display the candidates, the percentage of votes won, and the total votes won per candidate
+for key,value in Candidates.items():
+    print(f"{key}:",f"{round((value/Total_Votes)*100,3)}%",f"({value})")
+print("-------------------------")
+print(f"Winner: {max(Candidates,key=Candidates.get)}")
+print("-------------------------")
 
-Candidates_dict = {}
+# Save a reference point for the original Financial Analysis
+original_stdout = sys.stdout # Save a reference point for the original Financial Analysis
 
-
-#Open the csv file to begin working on the data.
-#Notice we also create a variable (input_file) for the opened file that will be used throughout the program
-# input_file = open(original_file)
-# input_file = csv.reader(input_file, delimiter=",")
-# csv_header = next(input_file)
-
-# for line in input_file:
-#     Total_votes += 1
-#     Candidates_dict[line[2]] = 0
-   
-
-
-
-
+# Create a txt file for a copy of the output. This will be placed in the same 
+#folder as the .py file
+with open('main_output.txt', 'w') as f:
+    sys.stdout = f 
+    print("Election Results")
+    print("-------------------------")
+    print(f"Total Votes: {Total_Votes}")
+    print("-------------------------")
+    for key,value in Candidates.items():
+        print(f"{key}:",f"{round((value/Total_Votes)*100,3)}%",f"({value})")
+    print("-------------------------")
+    print(f"Winner: {max(Candidates,key=Candidates.get)}")
+    print("-------------------------")
+    # Reset to the origial output
+    sys.stdout = original_stdout 
